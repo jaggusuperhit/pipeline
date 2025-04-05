@@ -11,4 +11,3 @@ wordcloud>=1.8.0
 scikit-learn>=1.0.0
 xgboost>=1.6.0
 
-dvc

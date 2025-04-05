@@ -1,7 +1,7 @@
 schema: '2.0'
 stages:
   data_ingestion:
-    cmd: python src/data_ingestion.py
+    cmd: .\dvc_pipeline\Scripts\python src\data_ingestion.py
     deps:
     - path: src/data_ingestion.py
       hash: md5
@@ -10,19 +10,19 @@ stages:
     params:
       params.yaml:
         data_ingestion:
-          test_size: 0.15
+          test_size: 0.2
     outs:
     - path: data/raw
       hash: md5
-      md5: f9661bfd5182dfb6b3d8b8fbdbe22b9e.dir
+      md5: 913943ac2e09d7a5a69f44a6a03f4b3b.dir
       size: 443700
       nfiles: 2
   data_pre-processing:
-    cmd: python src/data_pre-processing.py
+    cmd: .\dvc_pipeline\Scripts\python src\data_pre-processing.py
     deps:
     - path: data/raw
       hash: md5
-      md5: f9661bfd5182dfb6b3d8b8fbdbe22b9e.dir
+      md5: 913943ac2e09d7a5a69f44a6a03f4b3b.dir
       size: 443700
       nfiles: 2
     - path: src/data_pre-processing.py
@@ -32,15 +32,15 @@ stages:
     outs:
     - path: data/interim
       hash: md5
-      md5: 3ed286baea804a1137fc3f10ea056d18.dir
+      md5: fdea9df51f93556edd81db0454e5d957.dir
       size: 254243
       nfiles: 2
   feature_engineering:
-    cmd: python src/feature_engineering.py
+    cmd: .\dvc_pipeline\Scripts\python src\feature_engineering.py
     deps:
     - path: data/raw
       hash: md5
-      md5: f9661bfd5182dfb6b3d8b8fbdbe22b9e.dir
+      md5: 913943ac2e09d7a5a69f44a6a03f4b3b.dir
       size: 443700
       nfiles: 2
     - path: src/feature_engineering.py
@@ -50,20 +50,20 @@ stages:
     params:
       params.yaml:
         feature_engineering:
-          max_features: 45
+          max_features: 35
     outs:
     - path: data/processed
       hash: md5
-      md5: 4a2f8cd6fe91fd608c994eaf4650deca.dir
-      size: 1048601
+      md5: 6c1636638df6e78bb10a8a910088d34a.dir
+      size: 821984
       nfiles: 2
   model_building:
-    cmd: python src/model_building.py
+    cmd: .\dvc_pipeline\Scripts\python src\model_building.py
     deps:
     - path: data/processed
       hash: md5
-      md5: 4a2f8cd6fe91fd608c994eaf4650deca.dir
-      size: 1048601
+      md5: 6c1636638df6e78bb10a8a910088d34a.dir
+      size: 821984
       nfiles: 2
     - path: src/model_building.py
       hash: md5
@@ -72,20 +72,20 @@ stages:
     params:
       params.yaml:
         model_building:
-          n_estimators: 20
+          n_estimators: 22
           random_state: 2
     outs:
     - path: models/model.pkl
       hash: md5
-      md5: ede9503b363d946fb5cbeed6d12789f5
-      size: 816982
+      md5: 34ffaba803ea6672dcaf23f5a8bba7ae
+      size: 706227
   model_evaluation:
-    cmd: python src/model_evaluation.py
+    cmd: .\dvc_pipeline\Scripts\python src\model_evaluation.py
     deps:
     - path: models/model.pkl
       hash: md5
-      md5: ede9503b363d946fb5cbeed6d12789f5
-      size: 816982
+      md5: 34ffaba803ea6672dcaf23f5a8bba7ae
+      size: 706227
     - path: src/model_evaluation.py
       hash: md5
       md5: 9536c4bf4123adc130c3e23cf926152a
@@ -93,5 +93,5 @@ stages:
     outs:
     - path: dvclive/metrics.json
       hash: md5
-      md5: ca061699119a4cc5aedb7a9c9c899fdc
+      md5: 2bc30b62c344fbd60bbeea4a2bf04f95
       size: 145
