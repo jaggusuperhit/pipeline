@@ -10,3 +10,5 @@ wordcloud>=1.8.0
 # Machine Learning
 scikit-learn>=1.0.0
 xgboost>=1.6.0
+
+dvc
